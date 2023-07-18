@@ -1,0 +1,23 @@
+query($userName:String!) {
+  user(login: $userName){
+    contributionsCollection {
+      contributionCalendar {
+        totalContributions
+        weeks {
+          contributionDays {
+            color
+            contributionCount
+            contributionLevel
+            date
+          }
+        }
+      }
+    }
+  }
+  rateLimit {
+    limit
+    cost
+    remaining
+    resetAt
+  }
+}
