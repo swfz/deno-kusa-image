@@ -1,5 +1,20 @@
 import { createCanvas, serve } from "./deps.ts";
 
+interface ContributionDay {
+  color: string;
+  contributionCount: number;
+  contributionLevel: string;
+  date: string;
+}
+
+interface Week {
+  contributionDays: ContributionDay[];
+}
+
+interface ContributionCalendar {
+  totalContributions: number;
+  weeks: Week[];
+}
 
 const getContributions = async (user: string) => {
   const token = Deno.env.get("GH_READ_USER_TOKEN");
@@ -57,7 +72,7 @@ const handler = async (request: Request): Promise<Response> => {
     // deno-fmt-ignore
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Otc", "Nov", "Dec"];
     const monthLabels = contribution.weeks.map(
-      (week: any, i: number, array: any) => {
+      (week: Week, i: number, array: Week[]) => {
         const isBeginningOfMonth = array[i - 1] === undefined ||
           new Date(week.contributionDays[0].date).getMonth() !==
             new Date(array[i - 1].contributionDays[0].date).getMonth();
@@ -74,11 +89,11 @@ const handler = async (request: Request): Promise<Response> => {
     ctx.fillText("Wed", 1, 74);
     ctx.fillText("Fri", 1, 96);
 
-    contribution.weeks.forEach((week: any, i: number) => {
+    contribution.weeks.forEach((week: Week, i: number) => {
       ctx.fillStyle = "black";
       ctx.fillText(monthLabels[i], 20 + (space * i) + (size * i), 25);
 
-      week.contributionDays.forEach((day: any, j: number) => {
+      week.contributionDays.forEach((day: ContributionDay, j: number) => {
         ctx.fillStyle = day.color;
         ctx.fillRect(
           20 + (space * i) + (size * i),
