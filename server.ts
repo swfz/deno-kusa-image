@@ -1,4 +1,4 @@
-import { createCanvas, serve } from "./deps.ts";
+import { createCanvas, dayjs, serve } from "./deps.ts";
 
 interface ContributionDay {
   color: string;
@@ -51,9 +51,30 @@ const getContributions = async (user: string) => {
 };
 
 const port = 8080;
+const CACHE_HOUR = 3;
+
 const handler = async (request: Request): Promise<Response> => {
   const url = new URL(request.url);
   const user = url.searchParams.get("user");
+
+  const CACHE = await caches.open("v1");
+  const res = await CACHE.match(request);
+  if (res) {
+    const lastModified = res.headers.get("last-modified");
+
+    if (lastModified) {
+      const diffHour = dayjs().diff(lastModified, "hour");
+      // API rate limit 対策
+      if (diffHour < CACHE_HOUR) {
+        console.log(
+          `cache hit. cache runs out in ${CACHE_HOUR - diffHour} hours.`,
+        );
+        res.headers.set("x-cache-hit", "true");
+
+        return res;
+      }
+    }
+  }
 
   // const decoder = new TextDecoder("utf-8");
   // const file = await Deno.readFile("contributions.json");
@@ -107,11 +128,14 @@ const handler = async (request: Request): Promise<Response> => {
 
   const headers = new Headers();
   headers.set("content-type", "image/png");
+  headers.set("Last-Modified", new Date().toUTCString());
 
   const response = new Response(canvas.toBuffer(), {
     headers: headers,
     status: 200,
   });
+
+  await CACHE.put(request, response.clone());
 
   return response;
 };
