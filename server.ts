@@ -1,5 +1,5 @@
-import { createCanvas } from "https://deno.land/x/canvas/mod.ts";
-import { serve } from "https://deno.land/std@0.194.0/http/server.ts";
+import { createCanvas, serve } from "./deps.ts";
+
 
 const getContributions = async (user: string) => {
   const token = Deno.env.get("GH_READ_USER_TOKEN");
