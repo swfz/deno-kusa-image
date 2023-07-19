@@ -61,7 +61,7 @@ const handler = async (request: Request): Promise<Response> => {
   // const data = JSON.parse(decoder.decode(file));
   const data = await getContributions(user!);
 
-  const canvas = createCanvas(670, 130);
+  const canvas = createCanvas(670, 140);
   const ctx = canvas.getContext("2d");
   const space = 2;
   const size = 10;
@@ -103,6 +103,15 @@ const handler = async (request: Request): Promise<Response> => {
           size,
         );
       });
+    });
+
+    const legend = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
+    ctx.fillStyle = "black";
+    ctx.fillText("Less", 500, 128);
+    ctx.fillText("More", 595, 128);
+    legend.forEach((color: string, i: number) => {
+      ctx.fillStyle = color;
+      ctx.fillRect(530 + (space * i) + (size * i), 120, size, size);
     });
   }
 
