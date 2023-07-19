@@ -6,19 +6,26 @@ const port = 8080;
 
 const handler = async (request: Request): Promise<Response> => {
   const url = new URL(request.url);
-  const user = url.searchParams.get("user");
+  const user = url.searchParams.get("user") ?? null;
 
-  const data = await getContributions(user!);
+  if (user === null) {
+    return new Response("user parameter is required.", { status: 404 });
+  }
+
+  const data = await getContributions(user);
+
+  if (data?.data?.user === null) {
+    return new Response(`Could not resolve to a User. ${user}`, {
+      status: 404,
+    });
+  }
 
   const canvas = createCanvas(670, 140);
   const ctx = canvas.getContext("2d");
-
-  if (data?.data?.user !== null) {
-    renderContributions(
-      ctx,
-      data.data.user.contributionsCollection.contributionCalendar,
-    );
-  }
+  renderContributions(
+    ctx,
+    data.data.user.contributionsCollection.contributionCalendar,
+  );
 
   const headers = new Headers();
   headers.set("content-type", "image/png");
