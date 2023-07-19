@@ -1,4 +1,4 @@
-import { createCanvas, dayjs, serve } from "./deps.ts";
+import { createCanvas, serve } from "./deps.ts";
 
 interface ContributionDay {
   color: string;
