@@ -23,12 +23,17 @@ const makeMohthLabels = (contribution: ContributionCalendar) => {
 
 const renderContributions = (
   ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
   contribution: ContributionCalendar,
 ) => {
   const space = 2;
   const size = 10;
 
   const monthLabels = makeMohthLabels(contribution);
+
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, width, height);
 
   // deno-fmt-ignore
   ctx.fillText(`${contribution.totalContributions} contributions in the last year`, 10, 10);

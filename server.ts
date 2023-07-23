@@ -24,6 +24,8 @@ const handler = async (request: Request): Promise<Response> => {
   const ctx = canvas.getContext("2d");
   renderContributions(
     ctx,
+    canvas.width,
+    canvas.height,
     data.data.user.contributionsCollection.contributionCalendar,
   );
 
