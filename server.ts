@@ -1,4 +1,4 @@
-import { createCanvas, serve } from "./deps.ts";
+import { createCanvas } from "./deps.ts";
 import { getContributions } from "./contributions.ts";
 import { renderContributions } from "./renderCanvas.ts";
 
@@ -37,8 +37,10 @@ const handler = async (request: Request): Promise<Response> => {
     status: 200,
   });
 
+  console.log(`${user}`);
+
   return response;
 };
 
 console.log(`HTTP webserver running. Access it at: http://localhost:8080/`);
-await serve(handler, { port });
+Deno.serve({ port }, handler);
