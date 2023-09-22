@@ -1,0 +1,17 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --watch server.ts",
+    "deploy": "deployctl deploy --project=kusa-image --prod server.ts",
+    "fmt-check": "deno fmt --check"
+  },
+  "lint": {
+    "exclude": ["./vrt/**/*", "./vrt/*"]
+  },
+  "fmt": {
+    "exclude": ["./vrt/**/*", "./vrt/*"],
+    "lineWidth": 120
+  },
+  "test": {
+    "exclude": ["./vrt/**/*", "./vrt/*"]
+  }
+}
