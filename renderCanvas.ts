@@ -1,8 +1,4 @@
-import {
-  ContributionCalendar,
-  ContributionDay,
-  Week,
-} from "./contributions.ts";
+import { ContributionCalendar, ContributionDay, Week } from "./contributions.ts";
 
 const makeMohthLabels = (contribution: ContributionCalendar) => {
   // deno-fmt-ignore
@@ -14,9 +10,7 @@ const makeMohthLabels = (contribution: ContributionCalendar) => {
         new Date(week.contributionDays[0].date).getMonth() !==
           new Date(array[i - 1].contributionDays[0].date).getMonth();
 
-      return isBeginningOfMonth
-        ? months[new Date(week.contributionDays[0].date).getMonth()]
-        : " ";
+      return isBeginningOfMonth ? months[new Date(week.contributionDays[0].date).getMonth()] : " ";
     },
   );
 };

@@ -1,0 +1,13 @@
+{
+  "name": "vrt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.38.0",
+    "@types/node": "^20.6.1",
+    "json-server": "^0.17.3"
+  },
+  "scripts": {},
+  "dependencies": {}
+}

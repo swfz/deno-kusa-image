@@ -14,6 +14,8 @@ interface ContributionCalendar {
   weeks: Week[];
 }
 
+const API_URL = Deno.env.get("CI") ? "http://localhost:8000" : "https://api.github.com/graphql";
+
 const getContributions = async (user: string) => {
   const token = Deno.env.get("GH_READ_USER_TOKEN");
   const query = `
@@ -38,17 +40,12 @@ const getContributions = async (user: string) => {
 
   const variables = { user };
   const json = { query, variables };
-  const url = "https://api.github.com/graphql";
-  const res = await fetch(url, {
+  const res = await fetch(API_URL, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}`, "Content-type": "application/json" },
     body: JSON.stringify(json),
   });
 
-  // const decoder = new TextDecoder("utf-8");
-  // const file = await Deno.readFile("contributions.json");
-  // const data = JSON.parse(decoder.decode(file));
-  // return data;
   return res.json();
 };
 
