@@ -42,7 +42,7 @@ const getContributions = async (user: string) => {
   const json = { query, variables };
   const res = await fetch(API_URL, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, 'Content-type': 'application/json' },
+    headers: { Authorization: `Bearer ${token}`, "Content-type": "application/json" },
     body: JSON.stringify(json),
   });
 
