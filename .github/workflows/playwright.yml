@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.0
     - uses: denoland/setup-deno@v1.1.2
-    - uses: actions/setup-node@v3.8.1
+    - uses: actions/setup-node@v3.8.2
       with:
         node-version: 18
     - name: Install dependencies Prepare
