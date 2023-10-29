@@ -2,7 +2,7 @@ import { ContributionCalendar, ContributionDay, Week } from "./contributions.ts"
 
 const makeMohthLabels = (contribution: ContributionCalendar) => {
   // deno-fmt-ignore
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Otc", "Nov", "Dec"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   return contribution.weeks.map(
     (week: Week, i: number, array: Week[]) => {
