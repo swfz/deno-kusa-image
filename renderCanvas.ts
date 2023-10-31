@@ -50,7 +50,7 @@ const renderContributions = (
     });
   });
 
-  const legend = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"];
+  const legend = ["#ebedf0", ...contribution.colors];
 
   ctx.fillStyle = "black";
   ctx.fillText("Less", 500, 128);

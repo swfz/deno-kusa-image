@@ -11,6 +11,7 @@ interface Week {
 
 interface ContributionCalendar {
   totalContributions: number;
+  colors: string[];
   weeks: Week[];
 }
 
@@ -24,6 +25,7 @@ const getContributions = async (user: string) => {
         contributionsCollection {
           contributionCalendar {
             totalContributions
+            colors
             weeks {
               contributionDays {
                 color
