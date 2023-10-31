@@ -3,6 +3,7 @@ query($userName:String!) {
     contributionsCollection {
       contributionCalendar {
         totalContributions
+        colors
         weeks {
           contributionDays {
             color
