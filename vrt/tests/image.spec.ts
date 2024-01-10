@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import fs from 'fs';
 
 test('user params does not exist', async ({ page }) => {
   await page.goto('http://localhost:8080/');
@@ -13,14 +12,21 @@ test('user does not exist', async ({ page }) => {
   await expect(page.getByText('Could not resolve to a User.')).toBeVisible();
 });
 
-test('Image', async ({ page }) => {
-  const testData = fs.readFileSync('contributions.json', 'utf8');
-  await page.route('api.github.com', route => route.fulfill({
-    status: 200,
-    body: testData,
-  }));
-
+test('Image user search param', async ({ page }) => {
   await page.goto('http://localhost:8080/?user=swfz');
+
+  await expect(page).toHaveScreenshot();
+});
+
+test('Image user path param', async ({ page }) => {
+  await page.goto('http://localhost:8080/swfz');
+
+  await expect(page).toHaveScreenshot();
+});
+
+test('Image user search param and path param', async ({ page }) => {
+  // path paramが優先
+  await page.goto('http://localhost:8080/swfz?user=octocat');
 
   await expect(page).toHaveScreenshot();
 });

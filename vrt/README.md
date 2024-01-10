@@ -1,0 +1,9 @@
+# Playwright test
+
+本VRTで確認する項目はGitHub APIへのリクエストパラメータなどは問題ない前提で、描画部分で問題がないかどうか確認するためのテスト
+
+GitHub APIへのリクエストURLを環境変数により切り替え（CI=trueでlocalhostへのアクセス）
+
+localhostのAPIはjson-serverで用意
+
+ユーザーパラメータにより返すレスポンスを切り替え

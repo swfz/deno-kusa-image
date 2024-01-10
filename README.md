@@ -8,6 +8,12 @@ PNG of GitHub's Contribution Graphs
 https://kusa-image.deno.dev/?user=swfz
 ```
 
+or
+
+```
+https://kusa-image.deno.dev/swfz
+```
+
 ## image
 
 ![contribution](contribution.png "alt")
@@ -18,6 +24,17 @@ https://kusa-image.deno.dev/?user=swfz
 
 ```
 deno run --allow-net --allow-env --watch server.ts
+```
+
+- test(vrt)
+
+```
+CI=true deno run --allow-net --allow-env --watch server.ts &
+
+cd vrt
+node json-server &
+
+yarn playwright test
 ```
 
 - deploy
