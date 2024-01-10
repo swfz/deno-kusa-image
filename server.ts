@@ -6,7 +6,7 @@ const port = 8080;
 
 const handler = async (request: Request): Promise<Response> => {
   const url = new URL(request.url);
-  const user = url.searchParams.get("user") ?? null;
+  const user = url.pathname.split("/").filter((p) => p.length > 0)[0] ?? url.searchParams.get("user") ?? null;
 
   if (user === null) {
     return new Response("user parameter is required.", { status: 404 });
