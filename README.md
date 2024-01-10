@@ -8,6 +8,12 @@ PNG of GitHub's Contribution Graphs
 https://kusa-image.deno.dev/?user=swfz
 ```
 
+or
+
+```
+https://kusa-image.deno.dev/swfz
+```
+
 ## image
 
 ![contribution](contribution.png "alt")
