@@ -7,7 +7,9 @@ server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
 server.post('*', (req, res) => {
-  const filename = req.body.variables['user'] === '' ? 'not_exist_user.json' : 'contributions.json';
+  const user = req.body.variables['user'];
+  const filename = user === '' ? 'not_exist_user.json' :
+    user === 'swfz' ? 'contributions.json' : 'contributions2.json';
   res.status(201).json(JSON.parse(fs.readFileSync(filename)));
 });
 
