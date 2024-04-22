@@ -32,7 +32,7 @@ jobs:
         cd vrt
         yarn playwright test
 
-    - uses: actions/upload-artifact@v4.3.1
+    - uses: actions/upload-artifact@v4.3.3
       if: always()
       with:
         name: playwright-report
