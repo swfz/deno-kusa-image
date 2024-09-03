@@ -14,6 +14,12 @@ or
 https://kusa-image.deno.dev/swfz
 ```
 
+### Optional Parameter
+
+| name | example    | description           |
+| :--- | :--------- | :-------------------- |
+| to   | 2024-01-01 | contribution end date |
+
 ## image
 
 ![contribution](contribution.png "alt")
