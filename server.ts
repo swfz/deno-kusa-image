@@ -12,7 +12,9 @@ const handler = async (request: Request): Promise<Response> => {
     return new Response("user parameter is required.", { status: 404 });
   }
 
-  const data = await getContributions(user);
+  const to = url.searchParams.get("to") ?? undefined;
+
+  const data = await getContributions(user, to);
 
   if (data?.data?.user === null) {
     return new Response(`Could not resolve to a User. ${user}`, {
