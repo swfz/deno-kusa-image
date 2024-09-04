@@ -15,18 +15,27 @@ const makeMohthLabels = (contribution: ContributionCalendar) => {
   );
 };
 
+const darkModeColors = {
+  NONE: "#161b22",
+  FIRST_QUARTILE: "#0e4429",
+  SECOND_QUARTILE: "#006d32",
+  THIRD_QUARTILE: "#26a641",
+  FOURTH_QUARTILE: "#39d353",
+};
+
 const renderContributions = (
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
   contribution: ContributionCalendar,
+  theme: string,
 ) => {
   const space = 2;
   const size = 10;
 
   const monthLabels = makeMohthLabels(contribution);
 
-  ctx.fillStyle = "#FFFFFF";
+  ctx.fillStyle = theme === "dark" ? "#000000" : "#FFFFFF";
   ctx.fillRect(0, 0, width, height);
 
   // deno-fmt-ignore
@@ -36,11 +45,11 @@ const renderContributions = (
   ctx.fillText("Fri", 1, 96);
 
   contribution.weeks.forEach((week: Week, i: number) => {
-    ctx.fillStyle = "black";
+    ctx.fillStyle = theme === "dark" ? "white" : "black";
     ctx.fillText(monthLabels[i], 20 + (space * i) + (size * i), 25);
 
     week.contributionDays.forEach((day: ContributionDay, j: number) => {
-      ctx.fillStyle = day.color;
+      ctx.fillStyle = theme === "dark" ? darkModeColors[day.contributionLevel] : day.color;
       ctx.fillRect(
         20 + (space * i) + (size * i),
         30 + (space * j) + (size * j),
@@ -50,9 +59,9 @@ const renderContributions = (
     });
   });
 
-  const legend = ["#ebedf0", ...contribution.colors];
+  const legend = theme === "dark" ? Object.values(darkModeColors) : ["#ebedf0", ...contribution.colors];
 
-  ctx.fillStyle = "black";
+  ctx.fillStyle = theme === "dark" ? "white" : "black";
   ctx.fillText("Less", 500, 128);
   ctx.fillText("More", 595, 128);
   legend.forEach((color: string, i: number) => {
