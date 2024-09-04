@@ -26,6 +26,7 @@ const getContributions = async (user: string, to?: string) => {
           contributionCalendar {
             totalContributions
             colors
+            isHalloween
             weeks {
               contributionDays {
                 color

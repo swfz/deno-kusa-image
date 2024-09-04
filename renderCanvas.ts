@@ -1,4 +1,5 @@
 import { ContributionCalendar, ContributionDay, Week } from "./contributions.ts";
+import { backgroundColor, squareColors, textColor } from "./colors.ts";
 
 const makeMohthLabels = (contribution: ContributionCalendar) => {
   // deno-fmt-ignore
@@ -20,13 +21,15 @@ const renderContributions = (
   width: number,
   height: number,
   contribution: ContributionCalendar,
+  theme: string,
+  event: string,
 ) => {
   const space = 2;
   const size = 10;
 
   const monthLabels = makeMohthLabels(contribution);
 
-  ctx.fillStyle = "#FFFFFF";
+  ctx.fillStyle = backgroundColor(theme);
   ctx.fillRect(0, 0, width, height);
 
   // deno-fmt-ignore
@@ -35,12 +38,14 @@ const renderContributions = (
   ctx.fillText("Wed", 1, 74);
   ctx.fillText("Fri", 1, 96);
 
+  const colors = squareColors(theme, event);
+
   contribution.weeks.forEach((week: Week, i: number) => {
-    ctx.fillStyle = "black";
+    ctx.fillStyle = textColor(theme);
     ctx.fillText(monthLabels[i], 20 + (space * i) + (size * i), 25);
 
     week.contributionDays.forEach((day: ContributionDay, j: number) => {
-      ctx.fillStyle = day.color;
+      ctx.fillStyle = colors[day.contributionLevel];
       ctx.fillRect(
         20 + (space * i) + (size * i),
         30 + (space * j) + (size * j),
@@ -50,9 +55,9 @@ const renderContributions = (
     });
   });
 
-  const legend = ["#ebedf0", ...contribution.colors];
+  const legend = Object.values(squareColors(theme, event)) as string[];
 
-  ctx.fillStyle = "black";
+  ctx.fillStyle = textColor(theme);
   ctx.fillText("Less", 500, 128);
   ctx.fillText("More", 595, 128);
   legend.forEach((color: string, i: number) => {

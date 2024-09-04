@@ -16,9 +16,10 @@ https://kusa-image.deno.dev/swfz
 
 ### Optional Parameter
 
-| name | example    | description           |
-| :--- | :--------- | :-------------------- |
-| to   | 2024-01-01 | contribution end date |
+| name  | example    | description                           |
+| :---- | :--------- | :------------------------------------ |
+| to    | 2024-01-01 | contribution end date                 |
+| theme | dark       | dark mode only. default is light mode |
 
 ## image
 

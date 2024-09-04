@@ -30,3 +30,9 @@ test('Image user search param and path param', async ({ page }) => {
 
   await expect(page).toHaveScreenshot();
 });
+
+test('Image dark theme', async ({ page }) => {
+  await page.goto('http://localhost:8080/swfz?theme=dark');
+
+  await expect(page).toHaveScreenshot();
+});
