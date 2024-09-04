@@ -1,4 +1,5 @@
 import { ContributionCalendar, ContributionDay, Week } from "./contributions.ts";
+import { backgroundColor, squareColors, textColor } from "./colors.ts";
 
 const makeMohthLabels = (contribution: ContributionCalendar) => {
   // deno-fmt-ignore
@@ -15,27 +16,20 @@ const makeMohthLabels = (contribution: ContributionCalendar) => {
   );
 };
 
-const darkModeColors = {
-  NONE: "#161b22",
-  FIRST_QUARTILE: "#0e4429",
-  SECOND_QUARTILE: "#006d32",
-  THIRD_QUARTILE: "#26a641",
-  FOURTH_QUARTILE: "#39d353",
-};
-
 const renderContributions = (
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
   contribution: ContributionCalendar,
   theme: string,
+  event: string,
 ) => {
   const space = 2;
   const size = 10;
 
   const monthLabels = makeMohthLabels(contribution);
 
-  ctx.fillStyle = theme === "dark" ? "#000000" : "#FFFFFF";
+  ctx.fillStyle = backgroundColor(theme);
   ctx.fillRect(0, 0, width, height);
 
   // deno-fmt-ignore
@@ -44,12 +38,14 @@ const renderContributions = (
   ctx.fillText("Wed", 1, 74);
   ctx.fillText("Fri", 1, 96);
 
+  const colors = squareColors(theme, event);
+
   contribution.weeks.forEach((week: Week, i: number) => {
-    ctx.fillStyle = theme === "dark" ? "white" : "black";
+    ctx.fillStyle = textColor(theme);
     ctx.fillText(monthLabels[i], 20 + (space * i) + (size * i), 25);
 
     week.contributionDays.forEach((day: ContributionDay, j: number) => {
-      ctx.fillStyle = theme === "dark" ? darkModeColors[day.contributionLevel] : day.color;
+      ctx.fillStyle = colors[day.contributionLevel];
       ctx.fillRect(
         20 + (space * i) + (size * i),
         30 + (space * j) + (size * j),
@@ -59,9 +55,9 @@ const renderContributions = (
     });
   });
 
-  const legend = theme === "dark" ? Object.values(darkModeColors) : ["#ebedf0", ...contribution.colors];
+  const legend = Object.values(squareColors(theme, event)) as string[];
 
-  ctx.fillStyle = theme === "dark" ? "white" : "black";
+  ctx.fillStyle = textColor(theme);
   ctx.fillText("Less", 500, 128);
   ctx.fillText("More", 595, 128);
   legend.forEach((color: string, i: number) => {

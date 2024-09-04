@@ -23,6 +23,8 @@ const handler = async (request: Request): Promise<Response> => {
     });
   }
 
+  const event = data.data.user.contributionsCollection.isHalloween ? "halloween" : "default";
+
   const canvas = createCanvas(670, 140);
   const ctx = canvas.getContext("2d");
   renderContributions(
@@ -31,6 +33,7 @@ const handler = async (request: Request): Promise<Response> => {
     canvas.height,
     data.data.user.contributionsCollection.contributionCalendar,
     theme,
+    event,
   );
 
   const headers = new Headers();
