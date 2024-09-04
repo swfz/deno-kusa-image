@@ -9,7 +9,8 @@ const handler = async (request: Request): Promise<Response> => {
   const user = url.pathname.split("/").filter((p) => p.length > 0)[0] ?? url.searchParams.get("user") ?? null;
 
   if (user === null) {
-    return new Response("user parameter is required.", { status: 404 });
+    const html = await Deno.readFile("./public/index.html");
+    return new Response(html, { headers: { "content-type": "text/html" } });
   }
 
   const to = url.searchParams.get("to") ?? undefined;
