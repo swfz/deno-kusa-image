@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --allow-net --allow-env --watch server.ts",
+    "dev": "deno run --allow-net --allow-env --allow-read --watch server.ts",
     "deploy": "deployctl deploy --project=kusa-image --prod server.ts",
     "fmt-check": "deno fmt --check"
   },

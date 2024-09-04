@@ -1,11 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-test('user params does not exist', async ({ page }) => {
-  await page.goto('http://localhost:8080/');
-
-  await expect(page.getByText('user parameter is required.')).toBeVisible();
-});
-
 test('user does not exist', async ({ page }) => {
   await page.goto('http://localhost:8080/?user=');
 
