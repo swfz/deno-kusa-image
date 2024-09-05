@@ -23,7 +23,7 @@ jobs:
         yarn playwright install --with-deps
     - name: run server
       run: |
-        deno run --allow-net --allow-env server.ts &
+        deno run --unstable-kv --allow-net --allow-env server.ts &
         cd vrt
         node json-server.js &
 
