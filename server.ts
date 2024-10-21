@@ -12,7 +12,7 @@ const handler = async (request: Request): Promise<Response> => {
   const to = url.searchParams.get("to") ?? undefined;
   const theme = url.searchParams.get("theme") ?? "light";
 
-  log(request, { user, to, theme });
+  await log(request, { user, to, theme });
 
   if (user === null) {
     const html = await Deno.readFile("./public/index.html");
@@ -21,7 +21,7 @@ const handler = async (request: Request): Promise<Response> => {
 
   const data = await getContributions(user, to);
 
-  if (data?.data?.user === null) {
+  if (data?.data?.user === undefined) {
     return new Response(`Could not resolve to a User. ${user}`, {
       status: 404,
     });
