@@ -21,7 +21,7 @@ const handler = async (request: Request): Promise<Response> => {
 
   const data = await getContributions(user, to);
 
-  if (data?.data?.user === undefined) {
+  if (data?.data?.user === null) {
     return new Response(`Could not resolve to a User. ${user}`, {
       status: 404,
     });
