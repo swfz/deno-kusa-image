@@ -5,13 +5,30 @@
     "fmt-check": "deno fmt --check"
   },
   "lint": {
-    "exclude": ["./vrt/**/*", "./vrt/*"]
+    "exclude": [
+      "./vrt/**/*",
+      "./vrt/*"
+    ]
   },
   "fmt": {
-    "exclude": ["./vrt/**/*", "./vrt/*"],
+    "exclude": [
+      "./vrt/**/*",
+      "./vrt/*"
+    ],
     "lineWidth": 120
   },
   "test": {
-    "exclude": ["./vrt/**/*", "./vrt/*"]
+    "exclude": [
+      "./vrt/**/*",
+      "./vrt/*"
+    ]
+  },
+  "deploy": {
+    "project": "b29b2deb-ef61-4ef2-80fc-f62542b20954",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "server.ts"
   }
 }
