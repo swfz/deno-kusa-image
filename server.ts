@@ -27,7 +27,7 @@ const handler = async (request: Request): Promise<Response> => {
     });
   }
 
-  const event = data.data.user.contributionsCollection.isHalloween ? "halloween" : "default";
+  const event = data.data.user.contributionsCollection.contributionCalendar.isHalloween ? "halloween" : "default";
 
   const canvas = createCanvas(670, 140);
   const ctx = canvas.getContext("2d");
