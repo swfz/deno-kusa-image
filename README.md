@@ -36,7 +36,7 @@ deno run --allow-net --allow-env --watch server.ts
 - test(vrt)
 
 ```
-CI=true deno run --allow-net --allow-env --watch server.ts &
+CI=true deno run dev &
 
 cd vrt
 node json-server &

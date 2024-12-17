@@ -33,6 +33,7 @@ const renderContributions = (
   ctx.fillRect(0, 0, width, height);
 
   // deno-fmt-ignore
+  ctx.fillStyle = textColor(theme);
   ctx.fillText(`${contribution.totalContributions} contributions in the last year`, 10, 10);
   ctx.fillText("Mon", 1, 52);
   ctx.fillText("Wed", 1, 74);
