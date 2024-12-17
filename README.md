@@ -16,10 +16,11 @@ https://kusa-image.deno.dev/swfz
 
 ### Optional Parameter
 
-| name  | example    | description                           |
-| :---- | :--------- | :------------------------------------ |
-| to    | 2024-01-01 | contribution end date                 |
-| theme | dark       | dark mode only. default is light mode |
+| name       | example    | description                           |
+| :--------- | :--------- | :------------------------------------ |
+| to         | 2024-01-01 | contribution end date                 |
+| theme      | dark       | dark mode only. default is light mode |
+| past_years | 3          | display for specified number of years |
 
 ## image
 

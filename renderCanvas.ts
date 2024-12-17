@@ -23,6 +23,8 @@ const renderContributions = (
   contribution: ContributionCalendar,
   theme: string,
   event: string,
+  offset: number,
+  term?: string | number,
 ) => {
   const space = 2;
   const size = 10;
@@ -30,26 +32,28 @@ const renderContributions = (
   const monthLabels = makeMohthLabels(contribution);
 
   ctx.fillStyle = backgroundColor(theme);
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(0, 0 + offset, width, height);
 
   // deno-fmt-ignore
+  const summary = `${contribution.totalContributions} contributions in ${term ? term: 'the last year'}`;
+
   ctx.fillStyle = textColor(theme);
-  ctx.fillText(`${contribution.totalContributions} contributions in the last year`, 10, 10);
-  ctx.fillText("Mon", 1, 52);
-  ctx.fillText("Wed", 1, 74);
-  ctx.fillText("Fri", 1, 96);
+  ctx.fillText(summary, 10, 10 + offset);
+  ctx.fillText("Mon", 1, 52 + offset);
+  ctx.fillText("Wed", 1, 74 + offset);
+  ctx.fillText("Fri", 1, 96 + offset);
 
   const colors = squareColors(theme, event);
 
   contribution.weeks.forEach((week: Week, i: number) => {
     ctx.fillStyle = textColor(theme);
-    ctx.fillText(monthLabels[i], 20 + (space * i) + (size * i), 25);
+    ctx.fillText(monthLabels[i], 20 + (space * i) + (size * i), 25 + offset);
 
     week.contributionDays.forEach((day: ContributionDay, j: number) => {
       ctx.fillStyle = colors[day.contributionLevel];
       ctx.fillRect(
         20 + (space * i) + (size * i),
-        30 + (space * j) + (size * j),
+        30 + (space * j) + (size * j) + offset,
         size,
         size,
       );
@@ -59,11 +63,11 @@ const renderContributions = (
   const legend = Object.values(squareColors(theme, event)) as string[];
 
   ctx.fillStyle = textColor(theme);
-  ctx.fillText("Less", 500, 128);
-  ctx.fillText("More", 595, 128);
+  ctx.fillText("Less", 500, 128 + offset);
+  ctx.fillText("More", 595, 128 + offset);
   legend.forEach((color: string, i: number) => {
     ctx.fillStyle = color;
-    ctx.fillRect(530 + (space * i) + (size * i), 120, size, size);
+    ctx.fillRect(530 + (space * i) + (size * i), 120 + offset, size, size);
   });
 };
 
