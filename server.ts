@@ -20,14 +20,20 @@ const handler = async (request: Request): Promise<Response> => {
     return new Response(html, { headers: { "content-type": "text/html" } });
   }
 
+  const fixPastYears = (pastYearsParam) => {
+    // 2008 is start GitHub
+    const limit = new Date().getFullYear() - 2008 + 1;
+
+    return parseInt(pastYearsParam) > limit ? limit : parseInt(pastYearsParam);
+  };
+
   const lineHeight = 140;
-  const canvasHeight = pastYears ? parseInt(pastYears) * lineHeight : lineHeight;
+  const canvasHeight = pastYears ? fixPastYears(pastYears) * lineHeight : lineHeight;
   const canvas = createCanvas(670, canvasHeight);
   const ctx = canvas.getContext("2d");
 
   if (pastYears) {
-    const n = parseInt(pastYears);
-
+    const n = fixPastYears(pastYears);
     for (const [index] of Array(n).entries()) {
       const year = new Date().getFullYear() - index;
       const data = await getContributions(user, `${year}-12-31`);
