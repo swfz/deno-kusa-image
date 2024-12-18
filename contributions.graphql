@@ -1,6 +1,6 @@
-query($userName:String!) {
+query($userName:String! $from:DateTime $to:DateTime) {
   user(login: $userName){
-    contributionsCollection {
+    contributionsCollection(from: $from, to: $to) {
       contributionCalendar {
         totalContributions
         colors
