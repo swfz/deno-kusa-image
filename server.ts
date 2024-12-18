@@ -36,7 +36,7 @@ const handler = async (request: Request): Promise<Response> => {
     const n = fixPastYears(pastYears);
     for (const [index] of Array(n).entries()) {
       const year = new Date().getFullYear() - index;
-      const data = await getContributions(user, `${year}-12-31`);
+      const data = await getContributions(user, `${year}-01-01T00:00:00Z`, `${year}-12-31T23:59:59Z`);
       const event = data.data.user.contributionsCollection.contributionCalendar.isHalloween ? "halloween" : "default";
 
       renderContributions(
@@ -51,7 +51,7 @@ const handler = async (request: Request): Promise<Response> => {
       );
     }
   } else {
-    const data = await getContributions(user, to);
+    const data = await getContributions(user, undefined, `${to}T23:59:59Z`);
 
     if (data?.data?.user === null) {
       return new Response(`Could not resolve to a User. ${user}`, {

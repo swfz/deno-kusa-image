@@ -17,12 +17,12 @@ interface ContributionCalendar {
 
 const API_URL = Deno.env.get("CI") ? "http://localhost:8000" : "https://api.github.com/graphql";
 
-const getContributions = async (user: string, to?: string) => {
+const getContributions = async (user: string, from?: string, to?: string) => {
   const token = Deno.env.get("GH_READ_USER_TOKEN");
   const query = `
-    query($user:String!) {
+    query($user:String! $from:DateTime $to:DateTime) {
       user(login: $user){
-        contributionsCollection${to ? `(to:"${to}T00:00:00")` : ""} {
+        contributionsCollection(from: $from, to: $to) {
           contributionCalendar {
             totalContributions
             colors
@@ -41,7 +41,7 @@ const getContributions = async (user: string, to?: string) => {
     }
   `;
 
-  const variables = { user };
+  const variables = { user, from, to };
   const json = { query, variables };
   const res = await fetch(API_URL, {
     method: "POST",
