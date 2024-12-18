@@ -23,8 +23,9 @@ const handler = async (request: Request): Promise<Response> => {
   const fixPastYears = (pastYearsParam) => {
     // 2008 is start GitHub
     const limit = new Date().getFullYear() - 2008 + 1;
+    const num = parseInt(pastYearsParam) ? parseInt(pastYearsParam) : 1;
 
-    return parseInt(pastYearsParam) > limit ? limit : parseInt(pastYearsParam);
+    return num > limit ? limit : num;
   };
 
   const lineHeight = 140;
@@ -51,7 +52,7 @@ const handler = async (request: Request): Promise<Response> => {
       );
     }
   } else {
-    const data = await getContributions(user, undefined, `${to}T23:59:59Z`);
+    const data = await getContributions(user, undefined, to ? `${to}T23:59:59Z` : undefined);
 
     if (data?.data?.user === null) {
       return new Response(`Could not resolve to a User. ${user}`, {
