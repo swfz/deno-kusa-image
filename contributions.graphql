@@ -4,6 +4,7 @@ query($userName:String!) {
       contributionCalendar {
         totalContributions
         colors
+        isHalloween
         weeks {
           contributionDays {
             color
