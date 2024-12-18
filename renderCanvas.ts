@@ -49,11 +49,12 @@ const renderContributions = (
     ctx.fillStyle = textColor(theme);
     ctx.fillText(monthLabels[i], 20 + (space * i) + (size * i), 25 + offset);
 
-    week.contributionDays.forEach((day: ContributionDay, j: number) => {
+    week.contributionDays.forEach((day: ContributionDay, j: number, arr: ContributionDay[]) => {
+      const jIndex = i === 0 ? 7 - arr.length + j : j;
       ctx.fillStyle = colors[day.contributionLevel];
       ctx.fillRect(
         20 + (space * i) + (size * i),
-        30 + (space * j) + (size * j) + offset,
+        30 + (space * jIndex) + (size * jIndex) + offset,
         size,
         size,
       );
