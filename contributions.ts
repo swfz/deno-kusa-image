@@ -17,7 +17,13 @@ interface ContributionCalendar {
 
 const API_URL = Deno.env.get("CI") ? "http://localhost:8000" : "https://api.github.com/graphql";
 
-const getContributions = async (user: string, from?: string, to?: string) => {
+const getContributions = async (useCache: boolean, user: string, from?: string, to?: string) => {
+  const cache = await caches.open("gh-api");
+
+  const cacheKey = `${API_URL}/${user}/${from}/${to}`;
+  const cached = await cache.match(cacheKey);
+  if (useCache && cached) return await cached.json();
+
   const token = Deno.env.get("GH_READ_USER_TOKEN");
   const query = `
     query($user:String! $from:DateTime $to:DateTime) {
@@ -49,7 +55,11 @@ const getContributions = async (user: string, from?: string, to?: string) => {
     body: JSON.stringify(json),
   });
 
-  return res.json();
+  if (useCache && res.ok && from && to) {
+    await cache.put(cacheKey, res.clone());
+  }
+
+  return await res.json();
 };
 
 export { getContributions };
