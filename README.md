@@ -34,6 +34,15 @@ https://kusa-image.deno.dev/swfz
 deno run --allow-net --allow-env --watch server.ts
 ```
 
+- query GraphQL
+
+e.g)
+
+```
+gh api graphql -f query="$(cat contributions.graphql)" -f userName=swfz -f from=2022-01-01T00:00:00Z -f to=2022-12-31T23:59:59Z
+gh api graphql -f query="$(cat ratelimit.graphql)"
+```
+
 - test(vrt)
 
 ```
