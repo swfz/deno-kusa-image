@@ -43,7 +43,6 @@ gh api graphql -f query="$(cat contributions.graphql)" -f userName=swfz -f from=
 gh api graphql -f query="$(cat ratelimit.graphql)"
 ```
 
-
 - test(vrt)
 
 ```
