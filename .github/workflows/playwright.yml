@@ -11,7 +11,7 @@ jobs:
     env:
       CI: true
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@v6.0.1
       - uses: denoland/setup-deno@v2.0.2
       - uses: actions/setup-node@v6.1.0
         with:
