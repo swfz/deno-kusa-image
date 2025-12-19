@@ -1,4 +1,8 @@
 {
+  "imports": {
+    "canvas": "https://deno.land/x/canvas@v1.4.2/mod.ts",
+    "@std/ulid": "jsr:@std/ulid@^1.0.0"
+  },
   "tasks": {
     "dev": "deno run --unstable-kv --allow-net --allow-env --allow-read --watch server.ts",
     "deploy": "deployctl deploy --project=kusa-image --prod server.ts",
