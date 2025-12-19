@@ -1,7 +1,8 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
-    "jsr:@std/ulid@*": "1.0.0"
+    "jsr:@std/ulid@*": "1.0.0",
+    "jsr:@std/ulid@1": "1.0.0"
   },
   "jsr": {
     "@std/ulid@1.0.0": {
@@ -28,5 +29,10 @@
     "https://deno.land/x/canvas@v1.4.2/src/lib.js": "55c4064064870313439dd7ef5297374cb0cbed2dc815bd064c3ace6e067753b0",
     "https://deno.land/x/canvas@v1.4.2/src/types.ts": "67d5800f8f4b0a407e0251676a03ae91b5f50a3ed53e6b72dc5984113cb93128",
     "https://deno.land/x/canvas@v1.4.2/src/wasm.js": "449d72cc14fc4142a5853f944df49a744d852981d09c5515528ede8aebb0afda"
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@std/ulid@1"
+    ]
   }
 }
