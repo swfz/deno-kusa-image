@@ -32,5 +32,3 @@ jobs:
           project: "kusa-image"
           entrypoint: "server.ts"
           root: ""
-          
-          
