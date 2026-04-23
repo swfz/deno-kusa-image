@@ -1,7 +1,7 @@
 import { ContributionCalendar, ContributionDay, Week } from "./contributions.ts";
 import { backgroundColor, squareColors, textColor } from "./colors.ts";
 
-const makeMohthLabels = (contribution: ContributionCalendar) => {
+const makeMonthLabels = (contribution: ContributionCalendar) => {
   // deno-fmt-ignore
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -29,7 +29,7 @@ const renderContributions = (
   const space = 2;
   const size = 10;
 
-  const monthLabels = makeMohthLabels(contribution);
+  const monthLabels = makeMonthLabels(contribution);
 
   ctx.fillStyle = backgroundColor(theme);
   ctx.fillRect(0, 0 + offset, width, height);
