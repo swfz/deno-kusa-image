@@ -54,9 +54,10 @@ const squareColors = (theme: string, event: string) => {
       },
     },
   };
-  const colors = allColors[event] ? allColors[event][theme] : allColors.default[theme];
+  const eventKey: Event = event === "halloween" ? "halloween" : "default";
+  const themeKey: Theme = theme === "dark" ? "dark" : "light";
 
-  return colors;
+  return allColors[eventKey][themeKey];
 };
 
 export { backgroundColor, squareColors, textColor };
