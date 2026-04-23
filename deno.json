@@ -6,6 +6,7 @@
   },
   "tasks": {
     "dev": "deno run --unstable-kv --allow-net --allow-env --allow-read --watch server.ts",
+    "test": "deno test --unstable-kv",
     "deploy": "deployctl deploy --project=kusa-image --prod server.ts",
     "fmt-check": "deno fmt --check"
   },
