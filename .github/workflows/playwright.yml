@@ -11,9 +11,9 @@ jobs:
     env:
       CI: true
     steps:
-      - uses: actions/checkout@v6.0.2
-      - uses: denoland/setup-deno@v2.0.3
-      - uses: actions/setup-node@v6.2.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: denoland/setup-deno@e95548e56dfa95d4e1a28d6f422fafe75c4c26fb # v2.0.3
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: 24
       - name: Install dependencies Prepare
@@ -32,7 +32,7 @@ jobs:
           cd vrt
           yarn playwright test
 
-      - uses: actions/upload-artifact@v6.0.0
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()
         with:
           name: playwright-report
