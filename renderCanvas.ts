@@ -1,20 +1,6 @@
 import { ContributionCalendar, ContributionDay, Week } from "./contributions.ts";
 import { backgroundColor, squareColors, textColor } from "./colors.ts";
-
-const makeMonthLabels = (contribution: ContributionCalendar) => {
-  // deno-fmt-ignore
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-  return contribution.weeks.map(
-    (week: Week, i: number, array: Week[]) => {
-      const isBeginningOfMonth = array[i - 1] === undefined ||
-        new Date(week.contributionDays[0].date).getMonth() !==
-          new Date(array[i - 1].contributionDays[0].date).getMonth();
-
-      return isBeginningOfMonth ? months[new Date(week.contributionDays[0].date).getMonth()] : " ";
-    },
-  );
-};
+import { makeMonthLabels } from "./monthLabels.ts";
 
 const renderContributions = (
   ctx: CanvasRenderingContext2D,
