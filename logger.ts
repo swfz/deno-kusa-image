@@ -2,6 +2,8 @@ import { ulid } from "@std/ulid";
 
 const EXPIRE_LOGS_DAYS = 90;
 
+type AdditionalData = Record<string, unknown>;
+
 const logObject = async (now: Date, req: Request) => {
   const ts = Math.floor(now.getTime() / 1000);
 
@@ -16,14 +18,16 @@ const logObject = async (now: Date, req: Request) => {
   };
 };
 
-const log = async (request: Request, additionalData) => {
-  const kv = await Deno.openKv();
+const log = async (request: Request, additionalData: AdditionalData, kv?: Deno.Kv) => {
+  const resolvedKv = kv ?? (await Deno.openKv());
   const now = new Date();
   const logRecord = { ...(await logObject(now, request)), ...additionalData };
 
-  return await kv.set(["logs", now.getFullYear(), now.getMonth() + 1, now.getDate(), ulid()], logRecord, {
-    expireIn: 1000 * 60 * 60 * 24 * EXPIRE_LOGS_DAYS,
-  });
+  return await resolvedKv.set(
+    ["logs", now.getFullYear(), now.getMonth() + 1, now.getDate(), ulid()],
+    logRecord,
+    { expireIn: 1000 * 60 * 60 * 24 * EXPIRE_LOGS_DAYS },
+  );
 };
 
 export { log };
