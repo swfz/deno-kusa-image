@@ -50,6 +50,7 @@ const handler = async (request: Request): Promise<Response> => {
     if (data?.data?.user === null) {
       return new Response(`Could not resolve to a User. ${user}`, {
         status: 404,
+        headers: { "content-type": "text/plain; charset=utf-8" },
       });
     }
 
