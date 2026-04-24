@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "lib": ["deno.window", "deno.unstable", "dom"]
+  },
   "imports": {
     "canvas": "https://deno.land/x/canvas@v1.4.2/mod.ts",
     "@std/ulid": "jsr:@std/ulid@^1.0.0",

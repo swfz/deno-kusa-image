@@ -40,7 +40,7 @@ const renderContributions = (
 
     week.contributionDays.forEach((day: ContributionDay, j: number, arr: ContributionDay[]) => {
       const jIndex = i === 0 ? 7 - arr.length + j : j;
-      ctx.fillStyle = colors[day.contributionLevel];
+      ctx.fillStyle = (colors as Record<string, string>)[day.contributionLevel];
       ctx.fillRect(x, 30 + cellStride * jIndex + offset, size, size);
     });
   });
