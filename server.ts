@@ -2,18 +2,9 @@ import { createCanvas } from "./deps.ts";
 import { getContributions } from "./contributions.ts";
 import { renderContributions } from "./renderCanvas.ts";
 import { log } from "./logger.ts";
+import { fixPastYears } from "./pastYears.ts";
 
 const port = 8080;
-
-const GITHUB_LAUNCH_YEAR = 2008;
-
-const fixPastYears = (pastYearsParam: string): number => {
-  const limit = new Date().getFullYear() - GITHUB_LAUNCH_YEAR + 1;
-  const parsed = parseInt(pastYearsParam);
-  const num = parsed ? parsed : 1;
-
-  return num > limit ? limit : num;
-};
 
 const handler = async (request: Request): Promise<Response> => {
   const url = new URL(request.url);
