@@ -2,6 +2,27 @@ import { ulid } from "@std/ulid";
 
 const EXPIRE_LOGS_DAYS = 90;
 
+const SENSITIVE_HEADERS = new Set([
+  "authorization",
+  "proxy-authorization",
+  "cookie",
+  "set-cookie",
+  "x-forwarded-for",
+  "x-real-ip",
+  "cf-connecting-ip",
+  "true-client-ip",
+]);
+
+const sanitizeHeaders = (headers: Headers): Record<string, string> => {
+  const result: Record<string, string> = {};
+  for (const [key, value] of headers.entries()) {
+    if (!SENSITIVE_HEADERS.has(key.toLowerCase())) {
+      result[key] = value;
+    }
+  }
+  return result;
+};
+
 type AdditionalData = Record<string, unknown>;
 
 const logObject = async (now: Date, req: Request) => {
@@ -13,7 +34,7 @@ const logObject = async (now: Date, req: Request) => {
     redirect: req.redirect,
     bodyUsed: req.bodyUsed,
     ...{ ts: ts },
-    headers: Object.fromEntries(req.headers.entries()),
+    headers: sanitizeHeaders(req.headers),
     ...(req.body ? { body: await req.text() } : {}),
   };
 };
