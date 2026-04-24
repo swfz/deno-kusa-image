@@ -5,6 +5,16 @@ import { log } from "./logger.ts";
 
 const port = 8080;
 
+const GITHUB_LAUNCH_YEAR = 2008;
+
+const fixPastYears = (pastYearsParam: string): number => {
+  const limit = new Date().getFullYear() - GITHUB_LAUNCH_YEAR + 1;
+  const parsed = parseInt(pastYearsParam);
+  const num = parsed ? parsed : 1;
+
+  return num > limit ? limit : num;
+};
+
 const handler = async (request: Request): Promise<Response> => {
   const url = new URL(request.url);
   const user = url.pathname.split("/").filter((p) => p.length > 0)[0] ?? url.searchParams.get("user") ?? null;
@@ -19,14 +29,6 @@ const handler = async (request: Request): Promise<Response> => {
     const html = await Deno.readFile("./public/index.html");
     return new Response(html, { headers: { "content-type": "text/html" } });
   }
-
-  const fixPastYears = (pastYearsParam) => {
-    // 2008 is start GitHub
-    const limit = new Date().getFullYear() - 2008 + 1;
-    const num = parseInt(pastYearsParam) ? parseInt(pastYearsParam) : 1;
-
-    return num > limit ? limit : num;
-  };
 
   const lineHeight = 140;
   const canvasHeight = pastYears ? fixPastYears(pastYears) * lineHeight : lineHeight;

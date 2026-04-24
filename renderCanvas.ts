@@ -31,19 +31,17 @@ const renderContributions = (
 
   const colors = squareColors(theme, event);
 
+  const cellStride = space + size;
+
   contribution.weeks.forEach((week: Week, i: number) => {
+    const x = 20 + cellStride * i;
     ctx.fillStyle = textColor(theme);
-    ctx.fillText(monthLabels[i], 20 + (space * i) + (size * i), 25 + offset);
+    ctx.fillText(monthLabels[i], x, 25 + offset);
 
     week.contributionDays.forEach((day: ContributionDay, j: number, arr: ContributionDay[]) => {
       const jIndex = i === 0 ? 7 - arr.length + j : j;
       ctx.fillStyle = colors[day.contributionLevel];
-      ctx.fillRect(
-        20 + (space * i) + (size * i),
-        30 + (space * jIndex) + (size * jIndex) + offset,
-        size,
-        size,
-      );
+      ctx.fillRect(x, 30 + cellStride * jIndex + offset, size, size);
     });
   });
 
@@ -54,7 +52,7 @@ const renderContributions = (
   ctx.fillText("More", 595, 128 + offset);
   legend.forEach((color: string, i: number) => {
     ctx.fillStyle = color;
-    ctx.fillRect(530 + (space * i) + (size * i), 120 + offset, size, size);
+    ctx.fillRect(530 + cellStride * i, 120 + offset, size, size);
   });
 };
 
