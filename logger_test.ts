@@ -89,6 +89,36 @@ Deno.test("log", async (t) => {
     }
   });
 
+  await t.step("sanitizes sensitive headers (Authorization, Cookie, IP-forwarding) from stored record", async () => {
+    const kv = await Deno.openKv(":memory:");
+    try {
+      const req = new Request("https://example.com/", {
+        method: "GET",
+        headers: {
+          "authorization": "Bearer secret-token",
+          "cookie": "session=abc",
+          "x-forwarded-for": "203.0.113.1",
+          "cf-connecting-ip": "203.0.113.1",
+          "user-agent": "qa",
+          "accept-language": "ja",
+        },
+      });
+
+      await log(req, {}, kv);
+
+      const entries = await collectEntries(kv);
+      const headers = entries[0].value.headers as Record<string, string>;
+      assertEquals(headers.authorization, undefined);
+      assertEquals(headers.cookie, undefined);
+      assertEquals(headers["x-forwarded-for"], undefined);
+      assertEquals(headers["cf-connecting-ip"], undefined);
+      assertEquals(headers["user-agent"], "qa");
+      assertEquals(headers["accept-language"], "ja");
+    } finally {
+      kv.close();
+    }
+  });
+
   await t.step("additionalData overrides request metadata on key collision", async () => {
     const kv = await Deno.openKv(":memory:");
     try {
