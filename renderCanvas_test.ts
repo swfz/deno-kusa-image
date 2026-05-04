@@ -27,9 +27,9 @@ const makeFakeCtx = () => {
   return { ops, ctx: ctx as unknown as CanvasRenderingContext2D };
 };
 
-const day = (level: string, date: string): ContributionDay => ({
+const day = (level: string, date: string, count = 0): ContributionDay => ({
   color: "",
-  contributionCount: 0,
+  contributionCount: count,
   contributionLevel: level,
   date,
 });
@@ -80,7 +80,7 @@ Deno.test("renderContributions", async (t) => {
 
     const summary = ops.find((o): o is TextOp => o.kind === "text" && o.text.startsWith("123 contributions"));
     assert(summary, "summary text should exist");
-    assertEquals(summary.text, "123 contributions in the last year");
+    assertEquals(summary.text, "123 contributions in the last year (max 0/day)");
     assertEquals({ x: summary.x, y: summary.y }, { x: 10, y: 10 });
     assertEquals(summary.fillStyle, textColor("light"));
   });
@@ -90,7 +90,25 @@ Deno.test("renderContributions", async (t) => {
     renderContributions(ctx, WIDTH, HEIGHT, calendar([], 50), "light", "default", 0, "2024-01-01~2024-12-31");
 
     const summary = ops.find((o): o is TextOp => o.kind === "text" && o.text.startsWith("50 contributions"));
-    assertEquals(summary?.text, "50 contributions in 2024-01-01~2024-12-31");
+    assertEquals(summary?.text, "50 contributions in 2024-01-01~2024-12-31 (max 0/day)");
+  });
+
+  await t.step("summary text embeds the max contributionCount across all days", () => {
+    const week: Week = {
+      contributionDays: [
+        day("FIRST_QUARTILE", "2024-01-07", 2),
+        day("FOURTH_QUARTILE", "2024-01-08", 30),
+        day("SECOND_QUARTILE", "2024-01-09", 7),
+      ],
+    };
+    const week2: Week = {
+      contributionDays: [day("THIRD_QUARTILE", "2024-01-14", 12)],
+    };
+    const { ops, ctx } = makeFakeCtx();
+    renderContributions(ctx, WIDTH, HEIGHT, calendar([week, week2], 51), "light", "default", 0, 2024);
+
+    const summary = ops.find((o): o is TextOp => o.kind === "text" && o.text.startsWith("51 contributions"));
+    assertEquals(summary?.text, "51 contributions in 2024 (max 30/day)");
   });
 
   await t.step("draws Mon/Wed/Fri weekday labels at fixed x=1 with offset applied to y", () => {

@@ -20,8 +20,13 @@ const renderContributions = (
   ctx.fillStyle = backgroundColor(theme);
   ctx.fillRect(0, 0 + offset, width, height);
 
+  const maxCount = contribution.weeks.reduce(
+    (acc, week) => week.contributionDays.reduce((a, d) => Math.max(a, d.contributionCount), acc),
+    0,
+  );
+
   // deno-fmt-ignore
-  const summary = `${contribution.totalContributions} contributions in ${term ? term: 'the last year'}`;
+  const summary = `${contribution.totalContributions} contributions in ${term ? term: 'the last year'} (max ${maxCount}/day)`;
 
   ctx.fillStyle = textColor(theme);
   ctx.fillText(summary, 10, 10 + offset);
