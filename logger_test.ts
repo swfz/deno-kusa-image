@@ -3,7 +3,7 @@ import { log } from "./logger.ts";
 
 const collectEntries = async (kv: Deno.Kv) => {
   const entries: Deno.KvEntry<Record<string, unknown>>[] = [];
-  for await (const entry of kv.list<Record<string, unknown>>({ prefix: ["logs"] })) {
+  for await (const entry of kv.list<Record<string, unknown>>({ prefix: ["kusa-image", "logs"] })) {
     entries.push(entry);
   }
   return entries;
@@ -69,7 +69,7 @@ Deno.test("log", async (t) => {
     }
   });
 
-  await t.step("uses year/month/day in key path", async () => {
+  await t.step("uses app-name/logs/year/month/day in key path", async () => {
     const kv = await Deno.openKv(":memory:");
     try {
       const req = new Request("https://example.com/");
@@ -77,7 +77,8 @@ Deno.test("log", async (t) => {
       await log(req, {}, kv);
 
       const entries = await collectEntries(kv);
-      const [prefix, year, month, day, id] = entries[0].key;
+      const [app, prefix, year, month, day, id] = entries[0].key;
+      assertEquals(app, "kusa-image");
       assertEquals(prefix, "logs");
       const now = new Date();
       assertEquals(year, now.getFullYear());
