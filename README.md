@@ -5,13 +5,13 @@ PNG of GitHub's Contribution Graphs
 ## url
 
 ```
-https://kusa-image.deno.dev/?user=swfz
+https://kusa-image.swfz.deno.net/?user=swfz
 ```
 
 or
 
 ```
-https://kusa-image.deno.dev/swfz
+https://kusa-image.swfz.deno.net/swfz
 ```
 
 ### Optional Parameter
