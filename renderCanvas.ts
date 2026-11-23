@@ -11,6 +11,7 @@ const renderContributions = (
   event: string,
   offset: number,
   term?: string | number,
+  notice?: string,
 ) => {
   const space = 2;
   const size = 10;
@@ -49,6 +50,11 @@ const renderContributions = (
       ctx.fillRect(x, 30 + cellStride * jIndex + offset, size, size);
     });
   });
+
+  if (notice) {
+    ctx.fillStyle = textColor(theme);
+    ctx.fillText(notice, 10, 128 + offset);
+  }
 
   const legend = Object.values(squareColors(theme, event)) as string[];
 

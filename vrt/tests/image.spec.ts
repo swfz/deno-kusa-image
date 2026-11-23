@@ -30,3 +30,15 @@ test('Image dark theme', async ({ page }) => {
 
   await expect(page).toHaveScreenshot();
 });
+// 移転の案内を描き足しても、埋め込み先のレイアウトが崩れないよう画像サイズは変えない
+for (const path of ['/swfz', '/?user=swfz', '/swfz?theme=dark']) {
+  test(`Image size is unchanged with moved notice: ${path}`, async ({ request }) => {
+    const response = await request.get(`http://localhost:8080${path}`);
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toBe('image/png');
+
+    const png = await response.body();
+    // PNG の IHDR チャンクの幅と高さ
+    expect({ width: png.readUInt32BE(16), height: png.readUInt32BE(20) }).toEqual({ width: 670, height: 140 });
+  });
+}

@@ -199,4 +199,30 @@ Deno.test("renderContributions", async (t) => {
     ]);
     assertEquals(legendRects.map((r) => r.fillStyle), Object.values(palette));
   });
+
+  await t.step("draws the notice at the left of the legend row with textColor(theme)", () => {
+    const { ops, ctx } = makeFakeCtx();
+    renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "dark", "default", 140, undefined, "Moved -> here");
+
+    const notice = ops.find((o): o is TextOp => o.kind === "text" && o.text === "Moved -> here");
+    assertEquals(notice, { kind: "text", fillStyle: textColor("dark"), text: "Moved -> here", x: 10, y: 128 + 140 });
+  });
+
+  await t.step("keeps the notice left of the Less label", () => {
+    const { ops, ctx } = makeFakeCtx();
+    renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "light", "default", 0, undefined, "Moved -> here");
+
+    const notice = ops.find((o): o is TextOp => o.kind === "text" && o.text === "Moved -> here");
+    const less = ops.find((o): o is TextOp => o.kind === "text" && o.text === "Less");
+    assert(notice !== undefined && less !== undefined && notice.x < less.x);
+    assertEquals(notice.y, less.y);
+  });
+
+  await t.step("draws no notice when it is omitted", () => {
+    const { ops, ctx } = makeFakeCtx();
+    renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "light", "default", 0);
+
+    const texts = ops.filter((o): o is TextOp => o.kind === "text").map((o) => o.text);
+    assert(!texts.some((text) => text.startsWith("Moved")));
+  });
 });

@@ -3,6 +3,7 @@ import { getContributions } from "./contributions.ts";
 import { renderContributions } from "./renderCanvas.ts";
 import { log } from "./logger.ts";
 import { fixPastYears } from "./pastYears.ts";
+import { movedNotice } from "./notice.ts";
 
 const port = 8080;
 
@@ -42,6 +43,7 @@ const handler = async (request: Request): Promise<Response> => {
         event,
         lineHeight * (n - (index + 1)),
         year,
+        movedNotice(user),
       );
     }
   } else {
@@ -67,6 +69,7 @@ const handler = async (request: Request): Promise<Response> => {
       event,
       0,
       term,
+      movedNotice(user),
     );
   }
 
