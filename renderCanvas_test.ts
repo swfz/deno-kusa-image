@@ -1,6 +1,7 @@
 import { assert, assertEquals } from "@std/assert";
 import { NOTICE_BACKGROUND, NOTICE_TEXT, renderContributions } from "./renderCanvas.ts";
 import { backgroundColor, squareColors, textColor } from "./colors.ts";
+import { MOVED_NOTICE } from "./notice.ts";
 import type { ContributionCalendar, ContributionDay, Week } from "./contributions.ts";
 
 type RectOp = { kind: "rect"; fillStyle: string; x: number; y: number; w: number; h: number };
@@ -240,11 +241,9 @@ Deno.test("renderContributions", async (t) => {
     assertEquals(ctx.font, "10px sans-serif");
   });
 
-  await t.step("keeps the notice box left of the Less label even for the longest user name", () => {
+  await t.step("keeps the notice box left of the Less label", () => {
     const { ops, ctx } = makeFakeCtx();
-    // GitHub のユーザー名は最大 39 文字
-    const notice = `Moved -> kusa-image.swfz.dev/${"a".repeat(39)}`;
-    renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "light", "default", 0, undefined, notice);
+    renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "light", "default", 0, undefined, MOVED_NOTICE);
 
     const box = ops.find((o): o is RectOp => o.kind === "rect" && o.fillStyle === NOTICE_BACKGROUND);
     const less = ops.find((o): o is TextOp => o.kind === "text" && o.text === "Less");

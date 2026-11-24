@@ -1,12 +1,6 @@
 import { assertEquals } from "@std/assert";
-import { movedNotice } from "./notice.ts";
+import { MOVED_NOTICE } from "./notice.ts";
 
-Deno.test("movedNotice", async (t) => {
-  await t.step("points to the same user on kusa-image.swfz.dev", () => {
-    assertEquals(movedNotice("swfz"), "Moved -> kusa-image.swfz.dev/swfz");
-  });
-
-  await t.step("keeps the user name as given", () => {
-    assertEquals(movedNotice("Octocat"), "Moved -> kusa-image.swfz.dev/Octocat");
-  });
+Deno.test("MOVED_NOTICE points from the old host to the new host", () => {
+  assertEquals(MOVED_NOTICE, "kusa-image.swfz.deno.net -> kusa-image.swfz.dev");
 });
