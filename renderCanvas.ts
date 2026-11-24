@@ -2,6 +2,24 @@ import { ContributionCalendar, ContributionDay, Week } from "./contributions.ts"
 import { backgroundColor, squareColors, textColor } from "./colors.ts";
 import { makeMonthLabels } from "./monthLabels.ts";
 
+// 移転の案内は、テーマによらず赤地に白の太字で描いて目立たせる
+const NOTICE_BACKGROUND = "#cf222e";
+const NOTICE_TEXT = "#ffffff";
+const NOTICE_PADDING = 4;
+
+const renderNotice = (ctx: CanvasRenderingContext2D, notice: string, offset: number) => {
+  const font = ctx.font;
+  ctx.font = `bold ${font}`;
+  const width = ctx.measureText(notice).width;
+
+  ctx.fillStyle = NOTICE_BACKGROUND;
+  ctx.fillRect(10 - NOTICE_PADDING, 117 + offset, width + NOTICE_PADDING * 2, 15);
+  ctx.fillStyle = NOTICE_TEXT;
+  ctx.fillText(notice, 10, 128 + offset);
+
+  ctx.font = font;
+};
+
 const renderContributions = (
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -11,6 +29,7 @@ const renderContributions = (
   event: string,
   offset: number,
   term?: string | number,
+  notice?: string,
 ) => {
   const space = 2;
   const size = 10;
@@ -50,6 +69,10 @@ const renderContributions = (
     });
   });
 
+  if (notice) {
+    renderNotice(ctx, notice, offset);
+  }
+
   const legend = Object.values(squareColors(theme, event)) as string[];
 
   ctx.fillStyle = textColor(theme);
@@ -61,4 +84,4 @@ const renderContributions = (
   });
 };
 
-export { renderContributions };
+export { NOTICE_BACKGROUND, NOTICE_TEXT, renderContributions };
