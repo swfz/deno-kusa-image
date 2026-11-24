@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "@std/assert";
-import { renderContributions } from "./renderCanvas.ts";
+import { NOTICE_BACKGROUND, NOTICE_TEXT, renderContributions } from "./renderCanvas.ts";
 import { backgroundColor, squareColors, textColor } from "./colors.ts";
 import type { ContributionCalendar, ContributionDay, Week } from "./contributions.ts";
 
@@ -10,7 +10,13 @@ type Op = RectOp | TextOp;
 const makeFakeCtx = () => {
   const ops: Op[] = [];
   let fillStyle = "";
+  const fonts: string[] = [];
   const ctx = {
+    font: "10px sans-serif",
+    // 1文字 6px として幅を返す
+    measureText(text: string) {
+      return { width: text.length * 6 };
+    },
     get fillStyle() {
       return fillStyle;
     },
@@ -21,10 +27,11 @@ const makeFakeCtx = () => {
       ops.push({ kind: "rect", fillStyle, x, y, w, h });
     },
     fillText(text: string, x: number, y: number) {
+      fonts.push(ctx.font);
       ops.push({ kind: "text", fillStyle, text, x, y });
     },
   };
-  return { ops, ctx: ctx as unknown as CanvasRenderingContext2D };
+  return { ops, fonts, ctx: ctx as unknown as CanvasRenderingContext2D };
 };
 
 const day = (level: string, date: string, count = 0): ContributionDay => ({
@@ -200,22 +207,48 @@ Deno.test("renderContributions", async (t) => {
     assertEquals(legendRects.map((r) => r.fillStyle), Object.values(palette));
   });
 
-  await t.step("draws the notice at the left of the legend row with textColor(theme)", () => {
-    const { ops, ctx } = makeFakeCtx();
+  await t.step("draws the notice in bold white text at the left of the legend row", () => {
+    const { ops, fonts, ctx } = makeFakeCtx();
     renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "dark", "default", 140, undefined, "Moved -> here");
 
-    const notice = ops.find((o): o is TextOp => o.kind === "text" && o.text === "Moved -> here");
-    assertEquals(notice, { kind: "text", fillStyle: textColor("dark"), text: "Moved -> here", x: 10, y: 128 + 140 });
+    const index = ops.findIndex((o) => o.kind === "text" && o.text === "Moved -> here");
+    assertEquals(ops[index], { kind: "text", fillStyle: NOTICE_TEXT, text: "Moved -> here", x: 10, y: 128 + 140 });
+    assertEquals(fonts[ops.filter((o, k) => o.kind === "text" && k <= index).length - 1], "bold 10px sans-serif");
   });
 
-  await t.step("keeps the notice left of the Less label", () => {
+  await t.step("paints a red box behind the notice sized to the text width", () => {
     const { ops, ctx } = makeFakeCtx();
+    renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "light", "default", 140, undefined, "Moved -> here");
+
+    const index = ops.findIndex((o) => o.kind === "text" && o.text === "Moved -> here");
+    assertEquals(ops[index - 1], {
+      kind: "rect",
+      fillStyle: NOTICE_BACKGROUND,
+      x: 6,
+      y: 117 + 140,
+      w: "Moved -> here".length * 6 + 8,
+      h: 15,
+    });
+  });
+
+  await t.step("restores the font after drawing the notice", () => {
+    const { ops, fonts, ctx } = makeFakeCtx();
     renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "light", "default", 0, undefined, "Moved -> here");
 
-    const notice = ops.find((o): o is TextOp => o.kind === "text" && o.text === "Moved -> here");
+    const less = ops.filter((o) => o.kind === "text").findIndex((o) => (o as TextOp).text === "Less");
+    assertEquals(fonts[less], "10px sans-serif");
+    assertEquals(ctx.font, "10px sans-serif");
+  });
+
+  await t.step("keeps the notice box left of the Less label even for the longest user name", () => {
+    const { ops, ctx } = makeFakeCtx();
+    // GitHub のユーザー名は最大 39 文字
+    const notice = `Moved -> kusa-image.swfz.dev/${"a".repeat(39)}`;
+    renderContributions(ctx, WIDTH, HEIGHT, calendar([], 0), "light", "default", 0, undefined, notice);
+
+    const box = ops.find((o): o is RectOp => o.kind === "rect" && o.fillStyle === NOTICE_BACKGROUND);
     const less = ops.find((o): o is TextOp => o.kind === "text" && o.text === "Less");
-    assert(notice !== undefined && less !== undefined && notice.x < less.x);
-    assertEquals(notice.y, less.y);
+    assert(box !== undefined && less !== undefined && box.x + box.w < less.x);
   });
 
   await t.step("draws no notice when it is omitted", () => {
